@@ -16,28 +16,15 @@ class CategoriaRepository extends ServiceEntityRepository
         parent::__construct($registry, Categoria::class);
     }
 
-//    /**
-//     * @return Categoria[] Returns an array of Categoria objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Categoria
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /** @return array<int, array{id:int, nome:string, total:int|string}> */
+    public function comTotalAtivos(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c.id, c.nome, COUNT(p.id) AS total')
+            ->leftJoin('c.produtos', 'p', 'WITH', 'p.ativo = true')
+            ->groupBy('c.id, c.nome')
+            ->orderBy('c.nome', 'ASC')
+            ->getQuery()
+            ->getArrayResult();
+    }
 }

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Loja{% endblock %}
+
+{% block body %}
+    <h1>{{ categoria_atual ? categoria_atual.nome : 'Todos os produtos' }}</h1>
+
+    <div class="loja">
+        <aside class="loja-menu">
+            <h2>Categorias</h2>
+            <ul>
+                <li>
+                    <a href="{{ path('app_loja_index') }}" class="{{ categoria_atual is null ? 'ativa' }}">Todas</a>
+                </li>
+                {% for c in categorias %}
+                    <li>
+                        <a href="{{ path('app_loja_index', {categoria: c.id}) }}"
+                           class="{{ categoria_atual and categoria_atual.id == c.id ? 'ativa' }}">
+                            {{ c.nome }} <span>({{ c.total }})</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </aside>
+
+        <section class="loja-vitrine">
+            {% for p in produtos %}
+                <article class="produto-card">
+                    <h3>{{ p.nome }}</h3>
+                    <small>{{ p.categoria.nome }}</small>
+                    <strong>R$ {{ p.preco|number_format(2, ',', '.') }}</strong>
+                    {# Depois do merge do Arthur, adicione:
+                    <a class="btn" href="{{ path('app_loja_produto', {id: p.id}) }}">Ver produto</a> #}
+                </article>
+            {% else %}
+                <p>Nenhum produto nesta categoria.</p>
+            {% endfor %}
+        </section>
+    </div>
+{% endblock %}

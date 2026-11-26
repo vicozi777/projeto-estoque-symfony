@@ -243,3 +243,23 @@ button:active, .btn:active { transform: translateY(1px); }
 nav .boas-vindas + a {
     margin-left: 12px;
 }
+
+.loja { display: grid; grid-template-columns: 220px 1fr; gap: 1.5rem; }
+.loja-menu ul { list-style: none; padding: 0; margin: 0; }
+.loja-menu a {
+    display: flex; justify-content: space-between;
+    padding: 0.5rem 0.75rem; border-radius: var(--radius);
+    text-decoration: none; color: var(--text-main);
+}
+.loja-menu a:hover { background: #f1f5f9; }
+.loja-menu a.ativa { background: var(--primary-color); color: #fff; }
+.loja-vitrine {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem; align-content: start;
+}
+.produto-card {
+    border: 1px solid var(--border-color); border-radius: var(--radius);
+    padding: 1rem; display: flex; flex-direction: column; gap: 0.4rem;
+}
+@media (max-width: 700px) { .loja { grid-template-columns: 1fr; } }
