@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Categoria;
 use App\Entity\Produto;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,28 +17,20 @@ class ProdutoRepository extends ServiceEntityRepository
         parent::__construct($registry, Produto::class);
     }
 
-//    /**
-//     * @return Produto[] Returns an array of Produto objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /** @return Produto[] produtos ativos, filtrados por categoria quando informada */
+    public function vitrine(?Categoria $categoria = null): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->addSelect('c')
+            ->join('p.categoria', 'c')
+            ->where('p.ativo = true')
+            ->orderBy('p.nome', 'ASC');
 
-//    public function findOneBySomeField($value): ?Produto
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        if ($categoria) {
+            $qb->andWhere('p.categoria = :categoria')
+               ->setParameter('categoria', $categoria);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 }
