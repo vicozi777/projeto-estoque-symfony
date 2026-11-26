@@ -34,6 +34,7 @@
         {% endif %}
     </head>
     <body>
+        {% block header %}
         <nav>
             <a href="{{ path('app_loja_index') }}">Loja</a>
             {% if app.user %}
@@ -44,9 +45,10 @@
                 <span class="boas-vindas">Bem-vindo, {{ app.user.nome }}!</span>
                 <a href="{{ path('app_logout') }}">Sair</a>
             {% else %}
-                <a href="{{ path('app_login') }}">Entrar</a>
+               
             {% endif %}
       </nav>
+        {% endblock %}
             
         <main>
             {% for tipo, mensagens in app.flashes %}

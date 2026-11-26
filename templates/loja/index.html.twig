@@ -1,40 +1,106 @@
+
 {% extends 'base.html.twig' %}
 
 {% block title %}Loja{% endblock %}
 
-{% block body %}
-    <h1>{{ categoria_atual ? categoria_atual.nome : 'Todos os produtos' }}</h1>
+{% block header %}{% endblock %}
 
-    <div class="loja">
-        <aside class="loja-menu">
-            <h2>Categorias</h2>
+{% block body %}
+
+<div class="loja-pagina">
+
+    {# Cabeçalho da loja #}
+    <header class="loja-cabecalho">
+        <div class="loja-cabecalho-conteudo">
+            <div class="loja-marca">
+           
+                <h2>Nome da Loja</h2>
+            </div>
+        </div>
+    </header>
+
+    {# Navegação das categorias #}
+    <nav class="loja-menu">
+        <div class="loja-menu-conteudo">
             <ul>
                 <li>
-                    <a href="{{ path('app_loja_index') }}" class="{{ categoria_atual is null ? 'ativa' }}">Todas</a>
+                    <a href="{{ path('app_loja_index') }}"
+                       class="{{ categoria_atual is null ? 'ativa' : '' }}">
+                        Todas
+                    </a>
                 </li>
+
                 {% for c in categorias %}
                     <li>
                         <a href="{{ path('app_loja_index', {categoria: c.id}) }}"
-                           class="{{ categoria_atual and categoria_atual.id == c.id ? 'ativa' }}">
-                            {{ c.nome }} <span>({{ c.total }})</span>
+                           class="{{ categoria_atual and categoria_atual.id == c.id ? 'ativa' : '' }}">
+                            {{ c.nome }}
                         </a>
                     </li>
                 {% endfor %}
             </ul>
-        </aside>
+        </div>
+    </nav>
+
+    {# Área dos produtos #}
+    <main class="loja-conteudo">
+
+        <div class="loja-titulo">
+            <h1>
+                {{ categoria_atual ? categoria_atual.nome : 'Todos os produtos' }}
+            </h1>
+
+            <span>{{ produtos|length }} produtos</span>
+        </div>
 
         <section class="loja-vitrine">
+
             {% for p in produtos %}
+
                 <article class="produto-card">
-                    <h3>{{ p.nome }}</h3>
-                    <small>{{ p.categoria.nome }}</small>
-                    <strong>R$ {{ p.preco|number_format(2, ',', '.') }}</strong>
-                    {# Depois do merge do Arthur, adicione:
-                    <a class="btn" href="{{ path('app_loja_produto', {id: p.id}) }}">Ver produto</a> #}
+
+                    <div class="produto-imagem">
+                        <div class="imagem-placeholder">
+                            <span>▧</span>
+                            <small>Imagem do produto</small>
+                        </div>
+                    </div>
+
+                    <div class="produto-informacoes">
+
+                        <small class="produto-categoria">
+                            {{ p.categoria.nome }}
+                        </small>
+
+                        <h3>{{ p.nome }}</h3>
+
+                        <strong class="produto-preco">
+                            R$ {{ p.preco|number_format(2, ',', '.') }}
+                        </strong>
+
+                        {# Depois do merge do Arthur, adicione:
+                        <a class="produto-botao"
+                           href="{{ path('app_loja_produto', {id: p.id}) }}">
+                            Ver produto
+                        </a>
+                        #}
+
+                    </div>
+
                 </article>
+
             {% else %}
-                <p>Nenhum produto nesta categoria.</p>
+
+                <p class="loja-vazia">
+                    Nenhum produto nesta categoria.
+                </p>
+
             {% endfor %}
+
         </section>
-    </div>
+
+    </main>
+
+</div>
+
 {% endblock %}
