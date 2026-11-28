@@ -37,6 +37,18 @@ class LojaControllerTest extends WebTestCase
         self::assertSelectorTextContains('.loja-menu', 'Celulares');
     }
 
+    public function testRaizMostraLoja(): void
+    {
+        $categoria = $this->criarCategoria('Celulares');
+        $this->criarProduto('iPhone 16', 'IPH16', $categoria);
+
+        $this->client->request('GET', '/');
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains('h1', 'Todos os produtos');
+        self::assertSelectorTextContains('.loja-vitrine', 'iPhone 16');
+    }
+
     public function testFiltroPorCategoria(): void
     {
         $celulares = $this->criarCategoria('Celulares');
