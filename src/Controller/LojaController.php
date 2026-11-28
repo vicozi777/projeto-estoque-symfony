@@ -9,10 +9,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/loja')]
 final class LojaController extends AbstractController
 {
-    #[Route(name: 'app_loja_index', methods: ['GET'])]
+    #[Route('/loja', name: 'app_loja_index', methods: ['GET'])]
+    #[Route('/', name: 'app_home', methods: ['GET'])]
     public function index(
         Request $request,
         ProdutoRepository $produtos,
